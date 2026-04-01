@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router'
+import { ToastContainer } from 'react-toastify'
 
 export default function Header() {
     return (
         <>
+        <ToastContainer/>
             <header class="bg-[#0f172a] text-white px-6 py-4">
                 <div class="max-w-7xl mx-auto flex items-center justify-between">
 
@@ -42,7 +44,7 @@ export default function Header() {
                         {/* <!-- Phone --> */}
                         <Link to="/login">
                             <button class="border border-pink-500 px-4 py-2 rounded-full text-sm hover:bg-pink-500 hover:text-black transition">
-                                Login / Sign Up
+                                Login / Sign In
                             </button>
                         </Link>
 
