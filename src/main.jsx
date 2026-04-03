@@ -9,6 +9,9 @@ import Contact from "./Components/Contact";
 import Service from "./Components/Service";
 import Testonomials from "./Components/Testonomials";
 import Login from "./Components/Login";
+import HoroScope from "./Components/HoroScope";
+import Tarot from "./Components/Tarot";
+import Appiontment from "./Components/Appiontment";
 
 
 const root = document.getElementById("root");
@@ -24,6 +27,9 @@ ReactDOM.createRoot(root).render(
         <Route path="/services" element={<Service/>} />
         <Route path="/testimonials" element={<Testonomials/>} />
         <Route path="/login" element={<Login/>} />
+        <Route path="/horoscope" element={<HoroScope/>} />
+         <Route path="/tarot" element={<Tarot/>} />
+         <Route path="/appointment" element={<Appiontment/>} />
       </Route>
 
     </Routes>

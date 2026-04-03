@@ -1,18 +1,44 @@
 import React, { useState } from 'react'
+import { getDatabase, ref, set } from "firebase/database";
+import app from '../Firebase/config';
 import { toast } from 'react-toastify';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useNavigate } from 'react-router';
+
 
 export default function Login() {
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-   const formHandler = (event) => {
-      event.preventDefault();
-      localStorage.setItem("userEmail", email);
-      localStorage.setItem("userPassword", password);
-      toast.success("Login Successfully !!");
-      event.target.reset();
-   }
+  const formHandler = (event) => {
+    event.preventDefault();
+    const data = {
+      email: event.target.email.value,
+      password: event.target.password.value
+    }
+    const db = getDatabase(app);
+    set(ref(db, 'users/' + Date.now()), data);
+    event.target.reset();
+    toast.success('Login suceessfully !!');
+    navigate("/appointment");
+    console.log(data);
+  }
+
+  const googleLogin = () => {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth(app);
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        toast.success('Login Successfully !!');
+        navigate("/appointment");
+      }).catch((error) => {
+        const errorMessage = error.message;
+        toast.error(errorMessage);
+      });
+
+  }
   return (
     <>
       <div class="flex items-center min-h-screen p-4 bg-gray-100 lg:justify-center">
@@ -44,10 +70,7 @@ export default function Login() {
                 <label for="email" class="text-sm font-semibold text-gray-500">Email address</label>
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) =>
-                    setEmail(e.target.value)
-                  }
+                  name='email'
                   id="email"
                   autofocus
                   class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
@@ -60,10 +83,7 @@ export default function Login() {
                 </div>
                 <input
                   type="password"
-                  value={password}
-                  onChange={(e) =>
-                    setPassword(e.target.value)
-                  }
+                  name='password'
                   id="password"
                   class="px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
                 />
@@ -90,7 +110,16 @@ export default function Login() {
                   <span class="font-normal text-gray-500">or login with</span>
                   <span class="h-px bg-gray-400 w-14"></span>
                 </span>
-                <div class="flex flex-col space-y-4">
+                <div>
+                  <button
+                    type="submit"
+                    onClick={googleLogin}
+                    class="w-full px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-blue-200 focus:ring-4"
+                  >
+                    Login with Google
+                  </button>
+                </div>
+                {/* <div class="flex flex-col space-y-4">
                   <a
                     href="#"
                     class="flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-gray-800 rounded-md group hover:bg-gray-800 focus:outline-none"
@@ -123,7 +152,7 @@ export default function Login() {
                     </span>
                     <span class="text-sm font-medium text-blue-500 group-hover:text-white">Twitter</span>
                   </a>
-                </div>
+                </div> */}
               </div>
             </form>
           </div>
