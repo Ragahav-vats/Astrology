@@ -24,20 +24,19 @@ export default function Login() {
     console.log(data);
   }
 
-  const googleLogin = () => {
+  const googleLogin = async () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth(app);
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
         console.log(user);
-        toast.success('Login Successfully !!');
+        toast.success('Login suceessfully !!');
         navigate("/appointment");
       }).catch((error) => {
         const errorMessage = error.message;
         toast.error(errorMessage);
       });
-
   }
   return (
     <>
