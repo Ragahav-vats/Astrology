@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   FaStar,
   FaUserAstronaut,
@@ -8,8 +8,43 @@ import {
   FaSun,
 } from "react-icons/fa";
 import { FaMoon, } from "react-icons/fa";
+import app from '../Firebase/config';
+import { toast } from 'react-toastify';
+import { getDatabase, ref, set } from "firebase/database";
+import { useNavigate } from 'react-router';
 
 export default function Home() {
+
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+
+
+  const formHandler = (event) => {
+    event.preventDefault();
+    if (!email) {
+      toast.error("Email is required");
+      return;
+    }
+    const db = getDatabase(app);
+    const data = {
+      email: email
+    }
+    set(ref(db, 'users/' + Date.now()), data)
+    .then(() => {
+      toast.success('Subscribed');
+      setEmail("");
+    })
+      .catch((err) => {
+        toast.error(err.message);
+      })
+    event.target.reset();
+  }
+
+  const consult = (e) => {
+    e.preventDefault();
+    navigate("/appointment");
+  }
+
   const services = [
     {
       title: "Daily Horoscope",
@@ -105,7 +140,10 @@ export default function Home() {
                 </h3>
 
                 <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-pink-500 to-yellow-500 flex items-center justify-center text-2xl shadow-lg">
-                  👩‍🔮
+                  <img
+                      src="https://thumbs.dreamstime.com/b/business-woman-working-laptop-computer-office-63543303.jpg"
+                      className="w-full h-full rounded-lg object-cover"
+                    />
                 </div>
 
                 <h4 className="mt-3 font-semibold">
@@ -120,7 +158,7 @@ export default function Home() {
                   ★★★★★ <span className="text-gray-300 text-sm">4.9</span>
                 </p>
 
-                <button className="mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-2 rounded-lg hover:opacity-90">
+                <button className="mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-2 rounded-lg hover:opacity-90" onClick={consult}>
                   Consult Now
                 </button>
               </div>
@@ -166,7 +204,7 @@ export default function Home() {
           <div className="max-w-5xl mx-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-lg">
 
             {/* Left Text */}
-            
+
             <div>
               <h3 className="text-lg md:text-xl font-semibold text-white">
                 📩 Subscribe to Astro Updates
@@ -175,17 +213,19 @@ export default function Home() {
                 Get daily horoscope & exclusive astrology tips in your inbox.
               </p>
             </div>
-            
+
 
             {/* Input + Button */}
             <div className="flex w-full md:w-auto gap-2">
               <input
                 type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
                 placeholder="Enter your email address"
                 className="w-full md:w-64 px-4 py-2 rounded-lg bg-white/10 text-white placeholder-gray-300 outline-none border border-white/10 focus:ring-2 focus:ring-cyan-400"
               />
 
-              <button className="bg-gradient-to-r from-blue-500 to-cyan-500 px-5 py-2 rounded-lg text-white hover:opacity-90 whitespace-nowrap">
+              <button className="bg-gradient-to-r from-blue-500 to-cyan-500 px-5 py-2 rounded-lg text-white hover:opacity-90 whitespace-nowrap " onClick={formHandler}>
                 Subscribe
               </button>
             </div>

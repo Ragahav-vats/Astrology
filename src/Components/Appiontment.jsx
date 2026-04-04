@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import app from '../Firebase/config';
 import { getDatabase, ref, set } from "firebase/database";
 import { toast } from 'react-toastify';
 
 export default function Appiontment() {
+
+
     const formHandler = (event) => {
         event.preventDefault();
         const data = {
@@ -16,9 +18,10 @@ export default function Appiontment() {
         const db = getDatabase(app);
         set(ref(db, 'users/' + Date.now()), data);
         event.target.reset();
-        toast.success('Your Booking is Confirmed !!');
+        toast.success('Booking Confirmed !!');
         console.log(data);
     }
+
     return (
         <>
             {/* <!-- Appointment Section Start --> */}
