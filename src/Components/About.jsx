@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function About() {
+
+  const [more, setMore] = useState(false);
+
   return (
     <>
       <section class="bg-gray-900 text-white py-16 px-6">
@@ -48,10 +51,17 @@ export default function About() {
                 <h3 class="font-semibold">24/7 Support</h3>
               </div>
             </div>
+            {more && (
+              <p class="text-gray-400 mb-4">
+                In astrology, a person’s birth chart (also called a natal chart) is created using their date, time, and place of birth. This chart is used to understand personality traits, strengths, weaknesses, relationships, career paths, and future possibilities.
+              </p>
+
+
+            )}
 
             {/* <!-- 🚀 Button --> */}
-            <button class="bg-purple-600 px-6 py-3 rounded-full hover:bg-purple-700 transition">
-              Learn More
+            <button class="bg-purple-600 px-6 py-3 rounded-full hover:bg-purple-700 transition" onClick={() => setMore(!more)}>
+              {more ? "Learn Less" : "Learn More"}
             </button>
           </div>
 

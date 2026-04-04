@@ -12,6 +12,11 @@ import Login from "./Components/Login";
 import HoroScope from "./Components/HoroScope";
 import Tarot from "./Components/Tarot";
 import Appiontment from "./Components/Appiontment";
+import Love from "./Components/Love";
+import Kundli from "./Components/Kundli";
+import Horo from "./Components/Horo";
+import Puja from "./Components/Puja";
+import Gemstone from "./Components/Gemstone";
 
 
 const root = document.getElementById("root");
@@ -30,6 +35,12 @@ ReactDOM.createRoot(root).render(
         <Route path="/horoscope" element={<HoroScope/>} />
          <Route path="/tarot" element={<Tarot/>} />
          <Route path="/appointment" element={<Appiontment/>} />
+         <Route path="/love-marriage" element={<Love/>} />
+         <Route path="/kundli" element={<Kundli/>} />
+         <Route path="/horoscopes" element={<Horo/>} />
+         <Route path="/puja-remedies" element={<Puja/>} />
+         <Route path="/gemstone" element={<Gemstone/>} />
+         
       </Route>
 
     </Routes>

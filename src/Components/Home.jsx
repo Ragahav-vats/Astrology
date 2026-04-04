@@ -11,12 +11,14 @@ import { FaMoon, } from "react-icons/fa";
 import app from '../Firebase/config';
 import { toast } from 'react-toastify';
 import { getDatabase, ref, set } from "firebase/database";
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 export default function Home() {
 
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+  const [view, setView] = useState(false);
+  const [show, setShow] = useState(false);
 
 
   const formHandler = (event) => {
@@ -30,10 +32,10 @@ export default function Home() {
       email: email
     }
     set(ref(db, 'users/' + Date.now()), data)
-    .then(() => {
-      toast.success('Subscribed');
-      setEmail("");
-    })
+      .then(() => {
+        toast.success('Subscribed');
+        setEmail("");
+      })
       .catch((err) => {
         toast.error(err.message);
       })
@@ -51,30 +53,35 @@ export default function Home() {
       desc: "Read your daily predictions",
       btn: "View Today →",
       color: "from-indigo-500 to-purple-500",
+      Link: "/horoscopes"
     },
     {
       title: "Kundli Analysis",
       desc: "Detailed birth chart & insights",
       btn: "Analyze Now →",
       color: "from-cyan-500 to-blue-500",
+      Link: "/kundli"
     },
     {
       title: "Love & Marriage",
       desc: "Compatibility & love life predictions",
       btn: "Check Match →",
       color: "from-pink-500 to-purple-500",
+      Link: "/love-marriage"
     },
     {
       title: "Gemstone Recommendation",
       desc: "Find lucky gemstone for success",
       btn: "Get Suggestion →",
       color: "from-green-500 to-emerald-500",
+      Link: "/gemstone"
     },
     {
       title: "Puja & Remedies",
       desc: "Book religious pujas & solutions",
       btn: "Book Puja →",
       color: "from-orange-500 to-yellow-500",
+      Link: "/puja-remedies"
     },
   ];
   return (
@@ -89,6 +96,7 @@ export default function Home() {
           {services.map((item, index) => (
             <div
               key={index}
+              onClick={() => navigate(item.Link)}
               className={`p-5 rounded-2xl bg-gradient-to-br ${item.color} shadow-lg hover:scale-105 transition duration-300`}
             >
               <div className="bg-white/10 p-4 rounded-xl h-full flex flex-col justify-between">
@@ -99,7 +107,7 @@ export default function Home() {
                   <p className="text-sm opacity-80">{item.desc}</p>
                 </div>
 
-                <button className="mt-4 text-sm font-medium hover:underline">
+                <button className="mt-4 text-sm font-medium hover:underline" onClick={() => navigate(item.Link)}>
                   {item.btn}
                 </button>
               </div>
@@ -127,9 +135,17 @@ export default function Home() {
                   <p>🌅 Sunrise: 06:02 AM</p>
                   <p>🌇 Sunset: 06:55 PM</p>
                 </div>
+                {show && (
+                  <div class="mt-3">
+                    Today is a highly positive, successful, and spiritually powerful day
+                    Good for career growth
+                    Calm and focused mindset
+                    Strong positive energy throughout the day.
+                  </div>
+                )}
 
-                <button className="mt-4 text-sm text-cyan-400 hover:text-cyan-300">
-                  View Full Panchang →
+                <button className="mt-4 text-sm text-cyan-400 hover:text-cyan-300" onClick={() => setShow(!show)}>
+                  {show ? "View Less Panchang →" : "View Full Panchang →"}
                 </button>
               </div>
 
@@ -141,9 +157,9 @@ export default function Home() {
 
                 <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-pink-500 to-yellow-500 flex items-center justify-center text-2xl shadow-lg">
                   <img
-                      src="https://thumbs.dreamstime.com/b/business-woman-working-laptop-computer-office-63543303.jpg"
-                      className="w-full h-full rounded-lg object-cover"
-                    />
+                    src="https://thumbs.dreamstime.com/b/business-woman-working-laptop-computer-office-63543303.jpg"
+                    className="w-full h-full rounded-lg object-cover"
+                  />
                 </div>
 
                 <h4 className="mt-3 font-semibold">
@@ -190,9 +206,32 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
+                {view && (
+                  <div className="space-y-3 mt-3">
+                    <div className="flex gap-3 items-center">
+                      <img
+                        src="https://wallpapers.com/images/featured-full/beautiful-cute-love-9q00led7up2j0chv.jpg"
+                        className="w-16 h-16 rounded-lg object-cover border border-white/10"
+                      />
+                      <p className="text-sm text-gray-200">
+                        Discover what the stars say about your love and marriage journey?
+                      </p>
+                    </div>
 
-                <button className="mt-4 text-sm text-cyan-400 hover:text-cyan-300">
-                  View All →
+                    <div className="flex gap-3 items-center">
+                      <img
+                        src="https://as2.ftcdn.net/jpg/01/08/25/89/1000_F_108258950_5yqkxHqbcwjTKVEEiNoPX9MAsYt38Do3.jpg"
+                        className="w-16 h-16 rounded-lg object-cover border border-white/10"
+                      />
+                      <p className="text-sm text-gray-200">
+                        Unlock the secrets of your life path with your birth chart
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                <button className="mt-4 text-sm text-cyan-400 hover:text-cyan-300" onClick={() => setView(!view)}>
+                  {view ? "Show Less →" : "View All →"}
                 </button>
               </div>
 
@@ -226,7 +265,7 @@ export default function Home() {
               />
 
               <button className="bg-gradient-to-r from-blue-500 to-cyan-500 px-5 py-2 rounded-lg text-white hover:opacity-90 whitespace-nowrap " onClick={formHandler}>
-                Subscribe
+                Subscribed 
               </button>
             </div>
 
